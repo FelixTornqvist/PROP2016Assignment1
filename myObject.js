@@ -1,5 +1,7 @@
 function myObject() {};
 
+var name = "myObject";
+
 var prototypes = [];
 myObject.prototypes = prototypes;
 
@@ -7,10 +9,10 @@ myObject.create = function(prototypeList) {
     var newObject = {};
     newObject.__proto__ = myObject;
     if (prototypeList != null) {
-        for(newProto in prototypeList) {
-            if (prototypes.indexOf(newProto) == -1) {
-                prototypes.push(newProto);
-                print("added to list");
+        for(var newProto in prototypeList) {
+
+            if (this.prototypes.indexOf(newProto) == -1) {
+                this.prototypes.push(newProto);
             } else {
                 print("not added to list");
             }
@@ -19,22 +21,28 @@ myObject.create = function(prototypeList) {
     return newObject;
 };
 
-//  funkar inte men borde funka så nåt är fel
-myObject.call = myObject.bind(myObject);
+// myObject.call = myObject.bind(myObject);
 
 myObject.call = function(methodName, args) {
 
-    //       this i call refererar till call och inte myObject
-    print(this.hasOwnProperty(methodName) + " hasOwnProperty " + methodName);
+    if (this.hasOwnProperty(methodName)) {
+        return "yes";
+        // eval(methodName + "(" + args + ");");
 
-    if(this[methodName] == 'func') {
+    } else {
+        if (this.prototypes.length > 0) {
+            print("hahhaa " + prototypes.length);
+            for(var p in prototypes) {
+                print("index " + prototypes[p]);
 
+                print(p.hasOwnProperty("call"));
+                p.call(methodName, args);
+            }
+        }
 
-        print("inside typeof");
-        eval(methodName + "(" + args + ");");
     }
 
-    print("outside  :( ");
+
 };
 
 // 
@@ -42,6 +50,7 @@ myObject.call = function(methodName, args) {
 
 
 var obj1 = myObject.create(null);
+obj1.name = "obj1";
 
 obj1.func = function(arg) {
     return "func1: " + arg;
@@ -50,14 +59,20 @@ obj1.func = function(arg) {
 print(obj1.func("korv"));
 
 var punkt = myObject.create(null);
+punkt.name = "punkt";
 punkt.x = 0;
 punkt.y = 0;
 
 // print(punkt.x + ":" + punkt.y);
 
 var punktKorv = myObject.create([obj1, punkt]);
-punktKorv.func = function(arg) {
-    return "punktKorv: " + arg;
-};
-print(punktKorv.call("func", "hejsan"));
+punktKorv.name = "punktkorv"
+
+// punktKorv.func = function(arg) {
+//     return "punktKorv: " + arg;
+// };
+print(myObject.hasOwnProperty("call"));
+
+print("ibj1 hade call " + obj1.call("func", "hejsan"));
+print("punktkorv funkade " + punktKorv.call("func", "hejsan"));
 //print(punktKorv.x);
