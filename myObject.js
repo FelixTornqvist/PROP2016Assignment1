@@ -1,94 +1,86 @@
-function myObject() {};
-
-var name = "myObject";
 
 var myObject = {
-  create: function(prototypeList) {
-    var newObject = {};
+	prototypes: [],
+	
+	create: function(prototypeList) {
+		var newObject = Object.create(this);
+		var newProtoList = this.prototypes.slice(); // .slice() to create a new array object
 
-    if(!prototypeList || prototypeList.length === 0) {
+		if (prototypeList != null && prototypeList.length > 0) {
 
-    }
-    prototypeList.forEach(function(prototype) {
+			for (var i = 0;  i < prototypeList.length; i++) {
+				var newProto = prototypeList[i];
+ 
+				if (newProtoList.indexOf(newProto) == -1) {
+					
+					print("added prototype");
+					newProtoList.push(newProto);
+				} else {
+					print("prototype already added");
+				}
+			} 
+		}
 
+		newObject.prototypes = newProtoList;
+		return newObject;
+	},
 
-    });
-  },
-  create: function(prototypeList) {
-    var newObject = {};
+	call: function(methodName, args) {
+		print(this.name+" reached call-function");
+		print("have own proto-list: "+this.hasOwnProperty("prototypes"));
+		print("amount of protos: "+this.prototypes.length);
 
-    newObject.prototype = myObject;
+		if (methodName in this) {
+			print("object have own function");
+			return this.name+" have the function";
+	    	// return eval(methodName + "(" + args + ");");
+		} else {
+	  		print("search for function in prototypes:");
 
-    if (prototypeList != null) {
-      console.log(prototypeList.length);
-    
+	  		for (var i = 0;  i < this.prototypes.length; i++) {
+				var currentProto = this.prototypes[i];
 
-      for (var i = 0;  i < prototypeList.length; i++) {
-       console.log(typeof prototypeList[i]);  
-       if (this.indexOf(newP
-        proto) == -1) {
-           console.log("newProto " + typeof newProto);
-           this.push(newProto);
-         } else {
-           console.log("not added to list");
-         }
-      } 
-    } 
-    return newObject;
-  },
-
-  call: function(methodName, args) {
-    if (this.hasOwnProperty(methodName)) {
-      return "yes";
-      // eval(methodName + "(" + args + ");");
-    } else {
-      if (this.length > 0) {
-        console.log("hahhaa " + this.length);
-        for(var p in this) {
-          console.log("index " + typeof p);
-
-          console.log(p.hasOwnProperty("call"));
-          p.call(methodName, args);
-        }
-      }
-    }
-  },
+	  			print("\t"+i+" type: " + typeof currentProto);
+				return currentProto.call(methodName, args);
+  			}
+  		}
+	},
 };
 
-var obj1 = myObject.create(null);
-obj1.name = "obj1";
+/*--- test code ---*/
 
-obj1.func = function(arg) {
-  return "func1: " + arg;
-};
-
+//--punkt--
 var punkt = myObject.create(null);
 punkt.name = "punkt";
 punkt.x = 0;
 punkt.y = 0;
-
-console.log("obj1 from outside " + typeof obj1);
-
-var tempList = [[obj1], [punkt]];
-
+punkt.getPosition = function(){
+	return this.x + " : " + this.y;
+}
 
 
-var punktKorv = myObject.create([obj1, punkt]);
+//--färg--
+var färg = myObject.create(null);
+färg.name = "färg";
+färg.färg = "grön";
+färg.getFärg = function(){
+	return "färgen är "+this.färg;
+}
 
-punktKorv.name = "punktkorv"
+//--färgpunkt--
+var färgPunkt = myObject.create([punkt, färg]);
+färgPunkt.name = "färgpunkt";
 
 
-console.log(myObject.hasOwnProperty("call"));
+print();
 
-console.log("obj1 hade call " + obj1.call("func", "hejsan"));
-console.log("punktkorv funkade " + punktKorv.call("func", "hejsan"));
-// console.log(obj1.func("korv"));
+print("* punkt getPosition");
+print("punkt returned: "+punkt.call("getPosition", ""));
 
-// console.log(punkt.x + ":" + punkt.y);
+print();
 
-// var punktKorv = myObject.create(tempList);
-
-// punktKorv.func = function(arg) {
-//     return "punktKorv: " + arg;
-// };
-//console.log(punktKorv.x);
+print("* färgPunkt getPosition");
+print("färgPunkt returned: "+färgPunkt.call("getPosition", ""));
+print();
+print("* färgPunkt getFärg");
+print("färgPunkt returned: "+färgPunkt.call("getFärg", ""));
