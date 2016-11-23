@@ -25,8 +25,7 @@ myObject.call = myObject.bind(myObject);
 myObject.call = function(methodName, args) {
 
     //       this i call refererar till call och inte myObject
-    print(this.hasOwnProperty(methodName));
-    print(this.toString());
+    print(this.hasOwnProperty(methodName) + " hasOwnProperty " + methodName);
 
     if(this[methodName] == 'func') {
 
@@ -57,5 +56,8 @@ punkt.y = 0;
 // print(punkt.x + ":" + punkt.y);
 
 var punktKorv = myObject.create([obj1, punkt]);
+punktKorv.func = function(arg) {
+    return "punktKorv: " + arg;
+};
 print(punktKorv.call("func", "hejsan"));
 //print(punktKorv.x);
