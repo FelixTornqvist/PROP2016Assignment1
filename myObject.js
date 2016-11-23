@@ -32,8 +32,8 @@ var myObject = {
 
 		if (methodName in this) {
 			print("object have own function");
-			return this.name+" have the function";
-	    	// return eval(methodName + "(" + args + ");");
+			//return this.name+" have the function";
+	    	return eval("this."+methodName + "(" + args + ");");
 		} else {
 	  		print("search for function in protos:");
 
