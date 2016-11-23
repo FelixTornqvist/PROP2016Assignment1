@@ -26,7 +26,7 @@ var myObject = {
 	},
 
 	call: function(methodName, args) {
-		print(this.name+" reached call-function");
+		print(this.name+" started call-function");
 		print("have own proto-list: "+this.hasOwnProperty("prototypes"));
 		print("amount of protos: "+this.prototypes.length);
 
@@ -35,14 +35,29 @@ var myObject = {
 			return this.name+" have the function";
 	    	// return eval(methodName + "(" + args + ");");
 		} else {
-	  		print("search for function in prototypes:");
+	  		print("search for function in protos:");
 
 	  		for (var i = 0;  i < this.prototypes.length; i++) {
 				var currentProto = this.prototypes[i];
 
-	  			print("\t"+i+" type: " + typeof currentProto);
-				return currentProto.call(methodName, args);
+	  			print("\ti="+i+" name:" + currentProto.name + " type:" + typeof currentProto);
+
+	  			try{
+	  				var result = currentProto.call(methodName, args);
+	  				return result;
+	  			}catch(exception){
+
+	  				if(exception == "could not find function"){
+	  					print(this.name + " continues the search for the allmighty function..");
+	  					continue;
+	  				}
+	  				else 
+	  					throw exception;
+	  			}
   			}
+  			// comes here if there's no prototypes left to test
+  			print("No (more) protos in this object");
+  			throw "could not find function";
   		}
 	},
 };
@@ -74,13 +89,13 @@ färgPunkt.name = "färgpunkt";
 
 print();
 
-print("* punkt getPosition");
+print("** punkt getPosition test **");
 print("punkt returned: "+punkt.call("getPosition", ""));
 
 print();
 
-print("* färgPunkt getPosition");
+print("** färgPunkt getPosition test **");
 print("färgPunkt returned: "+färgPunkt.call("getPosition", ""));
 print();
-print("* färgPunkt getFärg");
+print("** färgPunkt getFärg test **");
 print("färgPunkt returned: "+färgPunkt.call("getFärg", ""));
