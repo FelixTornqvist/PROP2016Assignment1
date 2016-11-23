@@ -33,7 +33,7 @@ var myObject = {
 		if (methodName in this) {
 			print("object have own function");
 			//return this.name+" have the function";
-	    	return eval("this."+methodName + "(" + args + ");");
+        return eval("this." + methodName + "('" + args + "');");
 		} else {
 	  		print("search for function in protos:");
 
@@ -99,3 +99,12 @@ print("färgPunkt returned: "+färgPunkt.call("getPosition", ""));
 print();
 print("** färgPunkt getFärg test **");
 print("färgPunkt returned: "+färgPunkt.call("getFärg", ""));
+
+print();
+print("********** Annikas tests ************");
+print();
+
+var obj0 = myObject.create(null);
+obj0.func = function(arg) { return "func0: " + arg; };
+var obj1 = myObject.create([obj0]);
+print(obj0.call("func", ["Hello"]));
