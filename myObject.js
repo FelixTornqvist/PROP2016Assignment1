@@ -2,77 +2,93 @@ function myObject() {};
 
 var name = "myObject";
 
-var prototypes = [];
-myObject.prototypes = prototypes;
-
-myObject.create = function(prototypeList) {
+var myObject = {
+  create: function(prototypeList) {
     var newObject = {};
-    newObject.__proto__ = myObject;
+
+    if(!prototypeList || prototypeList.length === 0) {
+
+    }
+    prototypeList.forEach(function(prototype) {
+
+
+    });
+  },
+  create: function(prototypeList) {
+    var newObject = {};
+
+    newObject.prototype = myObject;
+
     if (prototypeList != null) {
-        for(var newProto in prototypeList) {
+      console.log(prototypeList.length);
+    
 
-            if (this.prototypes.indexOf(newProto) == -1) {
-                this.prototypes.push(newProto);
-            } else {
-                print("not added to list");
-            }
-        }
-    }
+      for (var i = 0;  i < prototypeList.length; i++) {
+       console.log(typeof prototypeList[i]);  
+       if (this.indexOf(newP
+        proto) == -1) {
+           console.log("newProto " + typeof newProto);
+           this.push(newProto);
+         } else {
+           console.log("not added to list");
+         }
+      } 
+    } 
     return newObject;
-};
+  },
 
-// myObject.call = myObject.bind(myObject);
-
-myObject.call = function(methodName, args) {
-
+  call: function(methodName, args) {
     if (this.hasOwnProperty(methodName)) {
-        return "yes";
-        // eval(methodName + "(" + args + ");");
-
+      return "yes";
+      // eval(methodName + "(" + args + ");");
     } else {
-        if (this.prototypes.length > 0) {
-            print("hahhaa " + prototypes.length);
-            for(var p in prototypes) {
-                print("index " + prototypes[p]);
+      if (this.length > 0) {
+        console.log("hahhaa " + this.length);
+        for(var p in this) {
+          console.log("index " + typeof p);
 
-                print(p.hasOwnProperty("call"));
-                p.call(methodName, args);
-            }
+          console.log(p.hasOwnProperty("call"));
+          p.call(methodName, args);
         }
-
+      }
     }
-
-
+  },
 };
-
-// 
-
-
 
 var obj1 = myObject.create(null);
 obj1.name = "obj1";
 
 obj1.func = function(arg) {
-    return "func1: " + arg;
+  return "func1: " + arg;
 };
-
-print(obj1.func("korv"));
 
 var punkt = myObject.create(null);
 punkt.name = "punkt";
 punkt.x = 0;
 punkt.y = 0;
 
-// print(punkt.x + ":" + punkt.y);
+console.log("obj1 from outside " + typeof obj1);
+
+var tempList = [[obj1], [punkt]];
+
+
 
 var punktKorv = myObject.create([obj1, punkt]);
+
 punktKorv.name = "punktkorv"
+
+
+console.log(myObject.hasOwnProperty("call"));
+
+console.log("obj1 hade call " + obj1.call("func", "hejsan"));
+console.log("punktkorv funkade " + punktKorv.call("func", "hejsan"));
+// console.log(obj1.func("korv"));
+
+// console.log(punkt.x + ":" + punkt.y);
+
+// var punktKorv = myObject.create(tempList);
 
 // punktKorv.func = function(arg) {
 //     return "punktKorv: " + arg;
 // };
-print(myObject.hasOwnProperty("call"));
-
-print("ibj1 hade call " + obj1.call("func", "hejsan"));
-print("punktkorv funkade " + punktKorv.call("func", "hejsan"));
-//print(punktKorv.x);
+//console.log(punktKorv.x);
