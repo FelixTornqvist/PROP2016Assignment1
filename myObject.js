@@ -12,9 +12,7 @@ var myObject = {
 				var newProto = prototypeList[i];
  
 				if (newProtoList.indexOf(newProto) == -1) {
-					
-					print("added prototype");
-					newProtoList.push(newProto);
+						newProtoList.push(newProto);
 				} else {
 					print("prototype already added");
 				}
@@ -26,37 +24,23 @@ var myObject = {
 	},
 
 	call: function(methodName, args) {
-		print(this.name+" started call-function");
-		print("have own proto-list: "+this.hasOwnProperty("prototypes"));
-		print("amount of protos: "+this.prototypes.length);
-
 		if (methodName in this) {
-			print("object have own function");
 			//return this.name+" have the function";
         return eval("this." + methodName + "('" + args + "');");
 		} else {
-	  		print("search for function in protos:");
-
 	  		for (var i = 0;  i < this.prototypes.length; i++) {
 				var currentProto = this.prototypes[i];
-
-	  			print("\ti="+i+" name:" + currentProto.name + " type:" + typeof currentProto);
-
-	  			try{
+	  			try {
 	  				var result = currentProto.call(methodName, args);
 	  				return result;
 	  			}catch(exception){
-
 	  				if(exception == "could not find function"){
-	  					print(this.name + " continues the search for the allmighty function..");
 	  					continue;
 	  				}
 	  				else 
 	  					throw exception;
 	  			}
   			}
-  			// comes here if there's no prototypes left to test
-  			print("No (more) protos in this object");
   			throw "could not find function";
   		}
 	},
@@ -86,25 +70,12 @@ färg.getFärg = function(){
 var färgPunkt = myObject.create([punkt, färg]);
 färgPunkt.name = "färgpunkt";
 
-
-print();
-
-print("** punkt getPosition test **");
-print("punkt returned: "+punkt.call("getPosition", ""));
-
-print();
-
-print("** färgPunkt getPosition test **");
-print("färgPunkt returned: "+färgPunkt.call("getPosition", ""));
-print();
-print("** färgPunkt getFärg test **");
-print("färgPunkt returned: "+färgPunkt.call("getFärg", ""));
-
-print();
-print("********** Annikas tests ************");
-print();
-
 var obj0 = myObject.create(null);
 obj0.func = function(arg) { return "func0: " + arg; };
 var obj1 = myObject.create([obj0]);
-print(obj0.call("func", ["Hello"]));
+print(obj1.call("func", ["Hello"]));
+obj1.func = function(arg) { return "func1 " + arg; };
+print(obj1.call("func", ["Hello again"]));
+var obj2 = myObject.create([obj1, obj0]);
+print(obj2.call("func", ["A third hello"]));
+
