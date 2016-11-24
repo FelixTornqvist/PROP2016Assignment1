@@ -1,29 +1,46 @@
 
 function createClass(className, superClassList) {
-  var allClasses = [];
 
-  createClass.classExists = function(className, superClassList, allClasses) {
+  var testVar = {
+    allClasses: [],
 
-    if (allClasses.length < 1) {
+    create(className, superClassList) {
+      if (testVar.allClasses.length > 0) {
+        console.log("length > 0");
+        for (var i = 0; i < allClasses.length; i++) {
+          if (className == allClasses[i]) {
+            console.log("allready a class");
+            break;
+          }
+        }
+      };
+        
       newClass = new Object,
       newClass.name = className,
       newClass.parents = superClassList,
 
       newClass.new = function(newObject) {
-          console.log("hello nr: " + allClasses.length); 
-        };
-        allClasses.push(newClass); // binding problem
+        console.log("object: " + newObject + ", class: " + newClass.name );
+      };
+
+      testVar.allClasses.push(newClass.name);
+      console.log(testVar.allClasses.length);
+
       return newClass;
-    };
+    },
   }
-  return createClass.classExists(className, superClassList, allClasses);
-};
+  
+  return testVar.create(className, superClassList);
+}
 
 
 
-class1 = (createClass("first", "list"));
-class1.new("newObject");
-class1.new("newObject");
-class1.new("newObject");
+class1 = createClass("first", []);
+class2 = createClass("second", []);
+// class3 = createClass("third", []);
+
+class1.new("first object 1");
+class2.new("second object 1");
+// class2.new("second object 1");
 
 
