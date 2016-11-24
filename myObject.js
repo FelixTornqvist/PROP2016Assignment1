@@ -18,7 +18,6 @@ var myObject = {
 				}
 			} 
 		}
-
 		newObject.prototypes = newProtoList;
 		return newObject;
 	},
@@ -46,36 +45,35 @@ var myObject = {
 	},
 };
 
-/*--- test code ---*/
+function createClass(className, superClassList) {
+  var newClass = myObject.create(superClassList);
+  newClass.name = className;
+  newClass.new = function() {
+    return new Object(this);
+  };
+  return newClass;
+};
 
-//--punkt--
-var punkt = myObject.create(null);
-punkt.name = "punkt";
-punkt.x = 0;
-punkt.y = 0;
-punkt.getPosition = function(){
-	return this.x + " : " + this.y;
-}
+// var obj0 = myObject.create(null);
+// obj0.func = function(arg) { return "func0: " + arg; };
+// var obj1 = myObject.create([obj0]);
+// var obj2 = myObject.create([]);
+// obj2.func = function(arg) { return "func2: " + arg; };
+// var obj3 = myObject.create([obj1, obj2]);
+// var result = obj3.call("func", ["hello"]);
+// print("result " + result);
 
 
-//--färg--
-var färg = myObject.create(null);
-färg.name = "färg";
-färg.färg = "grön";
-färg.getFärg = function(){
-	return "färgen är "+this.färg;
-}
+var class0 = createClass("Class0", null);
+class0.func = function(arg) { return "func0: " + arg; };
+var class1 = createClass("Class1", [class0]);
+var class2 = createClass("Class2", []);
+class2.func = function(arg) { return "func2: " + arg; };
+var class3 = createClass("Class3", [class1, class2]);
 
-//--färgpunkt--
-var färgPunkt = myObject.create([punkt, färg]);
-färgPunkt.name = "färgpunkt";
+var obj3 = class3.new();
+print("1: " + obj3.name);
 
-var obj0 = myObject.create(null);
-obj0.func = function(arg) { return "func0: " + arg; };
-var obj1 = myObject.create([obj0]);
-print(obj1.call("func", ["Hello"]));
-obj1.func = function(arg) { return "func1 " + arg; };
-print(obj1.call("func", ["Hello again"]));
-var obj2 = myObject.create([obj1, obj0]);
-print(obj2.call("func", ["A third hello"]));
+var result = obj3.call("func", ["hello"]);
 
+print("Result " + result);
