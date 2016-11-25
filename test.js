@@ -17,11 +17,6 @@ var myObject = {
 		var newObject = Object.create(this);
 		var newProtoList = this.prototypes.getPrototypes().slice(); // .slice() to create a new array object
 
-		print("gnifodnviajip");
-		if(prototypeList != null)
-		 	print(">niBIUGUDB:  " + prototypeList.length);
-
-
 		if (prototypeList != null && prototypeList.length > 0) {
 
 			for (var i = 0;  i < prototypeList.length; i++) {
@@ -34,6 +29,7 @@ var myObject = {
 				}
 			} 
 		}
+		newObject.prototypes = new protoBlueprint;
 		newObject.prototypes.setPrototypes(newProtoList);
 		return newObject;
 	},
@@ -43,11 +39,11 @@ var myObject = {
 			//return this.name+" have the function";
         	return eval("this." + methodName + "('" + args + "');");
 		} else {
-			print("im NOT mr.Eval");
 			var myProtos = this.prototypes.getPrototypes();
 
 	  		for (var i = 0;  i < myProtos.length; i++) {
 				var currentProto = myProtos[i];
+
 	  			try {
 	  				var result = currentProto.call(methodName, args);
 	  				return result;
@@ -93,6 +89,7 @@ färgPunkt.name = "färgpunkt";
 var obj0 = myObject.create(null);
 obj0.func = function(arg) { return "func0: " + arg; };
 var obj1 = myObject.create([obj0]);
+obj1.name = "obj1";
 
 print("before the call");
 print(obj1.call("func", ["Hello"]));
