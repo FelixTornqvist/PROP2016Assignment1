@@ -6,26 +6,35 @@ function protoBlueprint(mother) {
 	};
 
 	this.setPrototypes = function(newProtos) {
-		if (this.containsMother(owner)) {
-			console.log("FORBIDDEN!!");
+		var oldProtos = prototypes;
+		prototypes = newProtos;
+
+		if (this.protosContainsOwner(owner)) {
+			print("FORBIDDEN!!");		// should maybe use a throw statement instread
+			prototypes = oldProtos;
 			return false;
 		} else {
-				prototypes = newProtos;
+			return true;
 		}
 	};
 
-	this.containsMother = function(superOwner) {
-		for (var i = 0; i < newProtos.length; i++) {
+	this.protosContainsOwner = function(superOwner) {
+		var containsOwner = false;
+
+		for (var i = 0; i < prototypes.length; i++) {
+			var proto = prototypes[i];
 			
-		if (newProtos[i] == superOwner) {
-				console.log("FORBIDDEN!");
-		} else if (newProtos[i].prototypes) {
+			if (proto == superOwner) {
+				containsOwner = true;
+			} else {
+				containsOwner = proto.prototypes.protosContainsOwner(superOwner);
+			}
 
-
-
+			if (containsOwner)
+				break;
 		}
-		
 
+		return containsOwner;
 	}
 };
 
@@ -102,7 +111,15 @@ var class3 = createClass("Class3", [class1, class2]);
 var obj3 = class3.new();
 var result = obj3.call("func", ["hello"]);
 
-console.log("result " + result);
+print("result " + result);
 
+class2.newFunk = function(arg){
+	return "class2 newFunk :"+arg;
+}
+print(obj3.call("newFunk", "call from obj3"));
+
+class0.prototypes.setPrototypes([class0]);
 class0.prototypes.setPrototypes([class1]);
+class0.prototypes.setPrototypes([class3]);
+class0.prototypes.setPrototypes([class2]);
 // class0.call("korv", [null]);
