@@ -1,12 +1,33 @@
-function protoBlueprint(){
-		var prototypes = [];
-		this.getPrototypes = function(){
-			return prototypes;
-		};
-		this.setPrototypes = function(newProtos){
-			prototypes = newProtos;
-		};
+function protoBlueprint(mother) {
+	var owner = mother;
+	var prototypes = [];
+	this.getPrototypes = function() {
+		return prototypes;
 	};
+
+	this.setPrototypes = function(newProtos) {
+		if (this.containsMother(owner)) {
+			console.log("FORBIDDEN!!");
+			return false;
+		} else {
+				prototypes = newProtos;
+		}
+	};
+
+	this.containsMother = function(superOwner) {
+		for (var i = 0; i < newProtos.length; i++) {
+			
+		if (newProtos[i] == superOwner) {
+				console.log("FORBIDDEN!");
+		} else if (newProtos[i].prototypes) {
+
+
+
+		}
+		
+
+	}
+};
 
 
 var myObject = {
@@ -29,7 +50,7 @@ var myObject = {
 				}
 			} 
 		}
-		newObject.prototypes = new protoBlueprint;
+		newObject.prototypes = new protoBlueprint(newObject);
 		newObject.prototypes.setPrototypes(newProtoList);
 		return newObject;
 	},
@@ -60,44 +81,28 @@ var myObject = {
 	}
 };
 
+function createClass(className, superClassList) {
+  var newClass = myObject.create(superClassList);
+  newClass.name = className;
+  newClass.new = function() {
+    return new Object(this);
+  };
+  return newClass;
+};
+
 
 
 /*--- test code ---*/
+var class0 = createClass("Class0", null);
+class0.func = function(arg) { return "func0: " + arg; };
+var class1 = createClass("Class1", [class0]);
+var class2 = createClass("Class2", []);
+class2.func = function(arg) { return "func2: " + arg; };
+var class3 = createClass("Class3", [class1, class2]);
+var obj3 = class3.new();
+var result = obj3.call("func", ["hello"]);
 
-//--punkt--
-var punkt = myObject.create(null);
-punkt.name = "punkt";
-punkt.x = 0;
-punkt.y = 0;
-punkt.getPosition = function(){
-	return this.x + " : " + this.y;
-}
+console.log("result " + result);
 
-
-//--färg--
-var färg = myObject.create(null);
-färg.name = "färg";
-färg.färg = "grön";
-färg.getFärg = function(){
-	return "färgen är "+this.färg;
-}
-
-//--färgpunkt--
-var färgPunkt = myObject.create([punkt, färg]);
-färgPunkt.name = "färgpunkt";
-
-var obj0 = myObject.create(null);
-obj0.func = function(arg) { return "func0: " + arg; };
-var obj1 = myObject.create([obj0]);
-obj1.name = "obj1";
-
-print("before the call");
-print(obj1.call("func", ["Hello"]));
-print("after the call");
-
-
-obj1.func = function(arg) { return "func1 " + arg; };
-print(obj1.call("func", ["Hello again"]));
-var obj2 = myObject.create([obj1, obj0]);
-print(obj2.call("func", ["A third hello"]));
-
+class0.prototypes.setPrototypes([class1]);
+// class0.call("korv", [null]);
