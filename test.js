@@ -1,15 +1,14 @@
 function protoBlueprint(mother) {
 	var owner = mother;
 	var prototypes = [];
-	this.getPrototypes = function() {
 
+	this.getPrototypes = function() {
 		return prototypes.slice();
 	};
 
 	this.setPrototypes = function(newProtos) {
 		var oldProtos = prototypes;
 		prototypes = newProtos;
-
 		if (this.protosContainsOwner(owner)) {
 			prototypes = oldProtos;
 			throw "You Shall Not PASS!      ...this prototype";
@@ -21,7 +20,6 @@ function protoBlueprint(mother) {
 
 		for (var i = 0; i < prototypes.length; i++) {
 			var proto = prototypes[i];
-			
 			if (proto == superOwner) {
 				containsOwner = true;
 			} else {
@@ -42,13 +40,11 @@ var myObject = {
 	create : function(prototypeList) {
 
 		var newObject = Object.create(this);
-		var newProtoList = this.prototypes.getPrototypes().slice(); // .slice() to create a new array object
+		var newProtoList = this.prototypes.getPrototypes().slice();
 
 		if (prototypeList != null && prototypeList.length > 0) {
-
 			for (var i = 0;  i < prototypeList.length; i++) {
 				var newProto = prototypeList[i];
- 
 				if (newProtoList.indexOf(newProto) == -1) {
 						newProtoList.push(newProto);
 				}
@@ -65,10 +61,8 @@ var myObject = {
       return eval("this." + funcName + "('" + parameters + "');");
 		} else {
 			var myProtos = this.prototypes.getPrototypes();
-
 	  		for (var i = 0;  i < myProtos.length; i++) {
 				var currentProto = myProtos[i];
-
 	  			try {
 	  				var result = currentProto.call(funcName, parameters);
 	  				return result;
