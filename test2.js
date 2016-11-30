@@ -40,7 +40,7 @@ var myObject = {
 	create : function(prototypeList) {
 
 		var newObject = Object.create(this);
-		var newProtoList = this.prototypes.getPrototypes().slice();
+		var newProtoList = this.prototypes.getPrototypes();
 
 		if (prototypeList != null && prototypeList.length > 0) {
 			for (var i = 0;  i < prototypeList.length; i++) {
@@ -95,18 +95,3 @@ function createClass(className, superClassList) {
   
   return newClass;
 };
-
-
-notParent = myObject.create(null);
-
-obj1 = myObject.create(null);
-
-print("obj1 protos: "+obj1.prototypes);
-obj1.prototypes = null;
-print("obj1 protos: "+obj1.prototypes);
-
-// obj1.prototypes = new protoBlueprint(notParent);
-// obj1.prototypes.setPrototypes([obj1]);
-
-// obj1.call("func1","");
-
